@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class='container'>
+  <div class="card mb-2">
+    <div class="card-body p-3">
+        <div class="row">
+            <div class="col-4">
+                {% for image in book.images %}
+                  <div class='mx-2'>
+                    <img src="{{ image.image }}" class="image" alt="...">
+                  </div>
+                {% endfor %}
+            </div>
+            <div class="col-6">
+                <div class="mb-3">
+                    <div class="col-10 m-2">
+                        <h2>{{ book.title }}</h2>                              
+                    </div>
+                    <div class="col-10 m-3">
+                        <strong class="text-muted"><h5>{{ book.description }}</h5></strong>
+                    </div>
+                    <div class="col-10 m-4">
+                        <h2 class="price">{{ book.price }}$</h2>
+                    </div>
+                    <div class="m-2">
+                        <a href="" class="btn btn-info">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class='container'>
+    <h2 class='m-4'>{{ book.reviews|length }}  reviews</h2>
+    {% for review in book.reviews %}
+      <div class="card w-50 mb-3">
+        <div class="card-header">
+            {{ review.created_by }}
+        </div>
+        <div class="card-body">
+          <blockquote class=" mb-0">
+            <p>{{ review.message|linebreaks }}</p>
+            <small>created at <cite title="Source Title">{{ review.created_at }}</cite></small >
+          </blockquote>
+        </div>
+        <div class="card-footer">
+            {% if request.user.id is review.created_by.id %}
+            <a href="#" class='mx-2 px-4 btn btn-info'>Edit</a> <a href="#" class='mx-2 px-4 btn btn-dark'>Delete</a>
+            {% endif %}
+        </div>
+      </div>
+    {% empty %}
+        <p>There are no comments yet.</p>
+    {% endfor %}
+        <br>
+        <h4 class='mt-3 mb-3'>Add new review.</h4>
+        <a href="#" class="btn btn-primary m-2 pt-2 pb-2 px-5">Add</a>
+</div>
+{% endblock %}
